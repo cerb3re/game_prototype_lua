@@ -5,6 +5,13 @@
 
 # To use it:
 
+In this repository there is game test that I'v made in LUA
+- Displacement for rotation physics notion
+- Movement for movement physics notion
+- States Machine for artificial intelligence notion
+
+
+
 - go to https://studio.zerobrane.com/download?not-this-time
 - go to https://love2d.org/
 - Install both
