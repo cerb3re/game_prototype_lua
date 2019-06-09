@@ -1,4 +1,4 @@
-io.stdout:setvbuf('no') -- Used to print in terminal
+﻿io.stdout:setvbuf('no') -- Used to print in terminal
 love.graphics.setDefaultFilter("nearest")
 if arg[#arg] == "-debug" then require("mobdebug").start() end
 local sound_voyager
@@ -63,7 +63,7 @@ function love.draw()
     local point_nb  = (l * h) * percent
     local np
 
-    love.graphics.stencil(my_stencil, "replace", 1) -- créer un pochoir à pour mettre un 1 à la place des coords
+    love.graphics.stencil(my_stencil, "replace", 1) -- the stencil replace pictures coords by 1 others by 0
     love.graphics.setStencilTest("greater", 0)
     love.graphics.setColor(253 / 50, 251 / 50, 212 / 50, 50)
     for np = 1, point_nb do
