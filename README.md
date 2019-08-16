@@ -1,8 +1,4 @@
-# Lua Love2D Simple Movement Test
-
-# This project can be compiled with LUA
-
-# To use it:
+# Games made in Lua/Love2D
 
 Theses repositories are for games that I'v made in LUA / Love 2D
 - Displacement for rotation physics notion
