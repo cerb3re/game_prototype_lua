@@ -1,6 +1,6 @@
 # Games made in Lua/Love2D
 
-[![Build Status](https://github.com/cerb3re/game_prototype_lua)](https://github.com/cerb3re/game_prototype_lua)
+[![Build Status](https://api.travis-ci.org/pyenv/pyenv.svg?branch=master)](https://github.com/cerb3re/game_prototype_lua)
 
 Theses repositories are for games that I'v made in LUA / Love 2D
 - Displacement for rotation physics notion
