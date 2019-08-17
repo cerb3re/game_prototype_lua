@@ -20,9 +20,9 @@ function createRoom(lign, column)
   newRoom.lign        = lign
   newRoom.column      = column
   newRoom.isOpen      = false
-  newRoom.doorHeight  = false
+  newRoom.doorUp      = false
   newRoom.doorRight   = false
-  newRoom.doorBotom   = false
+  newRoom.doorBottom  = false
   newRoom.doorLeft    = false
   
   return newRoom
@@ -33,7 +33,7 @@ function generateDungeon()
   
   local nLigne, nColonne, nLigneDepart, nColonneDepart
   local listeSalles  = {}
-  local nbSalles    = 20
+  local nbSalles     = 20
   local startRoom
   
   nLigneDepart      = math.random(1, donjon.nombreDeLignes)
@@ -51,6 +51,56 @@ function generateDungeon()
   table.insert(listeSalles, startRoom)
   
   donjon.salleDepart = startRoom
+  print(#listeSalles)
+  print(nbSalles)
+  while #listeSalles < nbSalles do
+    local nSalle                  = math.random(1, #listeSalles)
+    local nLigne                  = listeSalles[nSalle].lign
+    local nColonne                = listeSalles[nSalle].column
+    local salle                   = listeSalles[nSalle]
+    local nouvelleSalle           = nil
+    local direction               = math.random(1, 4)
+    local bAjouteSalle            = false
+    
+    if direction == 1 and nLigne > 1 then
+      nouvelleSalle = donjon.map[nLigne - 1][nColonne]
+      if nouvelleSalle.isOpen == false then
+        salle.doorUp = true
+        nouvelleSalle.doorBottom = true
+        
+        bAjouteSalle = true
+      end
+    elseif direction == 2 and nColonne < donjon.nombreDeColonnes then
+      nouvelleSalle = donjon.map[nLigne][nColonne + 1]
+      if nouvelleSalle.isOpen == false then
+        salle.doorRight = true
+        nouvelleSalle.doorLeft  = true
+        
+        bAjouteSalle = true
+      end
+    elseif direction == 3 and nLigne < donjon.nombreDeLignes then
+      nouvelleSalle = donjon.map[nLigne + 1][nColonne]
+      if nouvelleSalle.isOpen == false then
+        salle.doorBottom = true
+        nouvelleSalle.doorUp = true
+        
+        bAjouteSalle = true
+      end
+    elseif direction == 4 and nColonne > 1 then
+      nouvelleSalle = donjon.map[nLigne][nColonne - 1]
+      if nouvelleSalle.isOpen == false then
+        salle.doorLeft = true
+        nouvelleSalle.doorRight = true
+        
+        bAjouteSalle = true
+      end
+    end
+    
+    if bAjouteSalle == true then
+      nouvelleSalle.isOpen = true
+      table.insert(listeSalles, nouvelleSalle)
+    end
+  end
 end
 
 function love.load()
