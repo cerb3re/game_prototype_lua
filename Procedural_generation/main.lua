@@ -118,7 +118,7 @@ end
 function love.draw()
   local x, y
   local largeurCase = 34
-  local longeurCase = 13
+  local hauteurCase = 13
   local espaceCase  = 5
   x = 5
   y = 5
@@ -137,11 +137,25 @@ function love.draw()
           love.graphics.setColor(255, 255, 255)
         end
       end
-      love.graphics.rectangle("fill", x, y, largeurCase, longeurCase)
       
+      love.graphics.rectangle("fill", x, y, largeurCase, hauteurCase)
+      
+      love.graphics.setColor(0.20, 210, 0.30)
+      if donjon.map[nLigne][nColonne].doorUp == true then
+        love.graphics.rectangle("fill", (x + largeurCase / 2) - 2, y - 2, 4, 6)
+      end
+      if donjon.map[nLigne][nColonne].doorRight == true then
+        love.graphics.rectangle("fill", (x + largeurCase) - 2, (y + hauteurCase / 2) - 2, 6, 4)  
+      end
+      if donjon.map[nLigne][nColonne].doorBottom == true then
+        love.graphics.rectangle("fill", (x + largeurCase / 2) - 2, (y + hauteurCase) - 2, 4, 6)  
+      end
+      if donjon.map[nLigne][nColonne].doorLeft == true then
+        love.graphics.rectangle("fill", (x - 2), (y + hauteurCase / 2) - 2, 4, 4)  
+      end
       x = x + largeurCase + espaceCase
     end
-    y = y + longeurCase + espaceCase
+    y = y + hauteurCase + espaceCase
   end
   love.graphics.setColor(255, 255, 255)
 end
