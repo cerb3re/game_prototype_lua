@@ -76,7 +76,11 @@ function love.draw()
       if donjon.map[nLigne][nColonne].isOpen == false then
         love.graphics.setColor(0.30, 0.30, 0.30)
       else
-        love.graphics.setColor(255, 255, 255)
+        if donjon.salleDepart == donjon.map[nLigne][nColonne] then
+          love.graphics.setColor(0.5, 0.255, 0.5)
+        else
+          love.graphics.setColor(255, 255, 255)
+        end
       end
       love.graphics.rectangle("fill", x, y, largeurCase, longeurCase)
       
@@ -85,4 +89,10 @@ function love.draw()
     y = y + longeurCase + espaceCase
   end
   love.graphics.setColor(255, 255, 255)
+end
+
+function love.keypressed(key)
+  if key == " " or key == "space" then
+    generateDungeon()
+  end
 end
