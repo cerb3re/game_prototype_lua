@@ -6,7 +6,7 @@ Theses repositories are for games that I'v made in LUA / Love 2D
 - States Machine for artificial intelligence notion
 - Beaming effect for shader notions
 - Plaformer for displacement and others stuff
-
+- Procedural map generation, binding of isaac like
 ------------------------------------------------------------------
 
 - go to https://studio.zerobrane.com/download?not-this-time
