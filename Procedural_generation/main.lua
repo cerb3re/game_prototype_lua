@@ -7,12 +7,17 @@ math.randomseed(love.timer.getTime()) -- get sure that the timer works
 love.graphics.setDefaultFilter("nearest")
 love.window.setTitle("Map Generation - T.CHENIER")
 
+local difficulty
+local nbRoomMax
 local donjon = {}
+
 donjon.nombreDeColonnes = 9
 donjon.nombreDeLignes   = 6
 donjon.map              = {}
 donjon.salleDepart      = nil
 
+nbRoomMax               = (donjon.nombreDeColonnes * donjon.nombreDeLignes)
+difficulty              = math.floor(nbRoomMax / 3)
 
 function createRoom(lign, column)
   local newRoom = {}
@@ -33,7 +38,7 @@ function generateDungeon()
   
   local nLigne, nColonne, nLigneDepart, nColonneDepart
   local listeSalles  = {}
-  local nbSalles     = math.random(1, donjon.nombreDeColonnes * donjon.nombreDeLignes) -- nombre de pièce à générer
+  local nbSalles     = math.random(1, difficulty) -- nombre de pièce à générer
   local startRoom
   
   nLigneDepart      = math.random(1, donjon.nombreDeLignes)
@@ -141,8 +146,18 @@ function love.draw()
   love.graphics.setColor(255, 255, 255)
 end
 
-function love.keypressed(key)
+function love.keypressed(key)  
   if key == " " or key == "space" then
     generateDungeon()
+  end
+  if key == "h" then
+    difficulty = nbRoomMax
+    print("difficulty is now Hard")
+  elseif key == "m" then
+    difficulty = math.floor(nbRoomMax / 2)
+    print("difficulty is now Medium")
+  elseif key == "e" then
+    difficulty = math.floor(nbRoomMax / 3)
+    print("difficulty is now Easy")
   end
 end
