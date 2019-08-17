@@ -38,7 +38,7 @@ function generateDungeon()
   
   local nLigne, nColonne, nLigneDepart, nColonneDepart
   local listeSalles  = {}
-  local nbSalles     = math.random(1, difficulty) -- nombre de pièce à générer
+  local nbSalles     = math.random(2, difficulty) -- nombre de pièce à générer
   local startRoom
   
   nLigneDepart      = math.random(1, donjon.nombreDeLignes)
