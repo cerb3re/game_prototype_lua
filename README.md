@@ -3,9 +3,9 @@
 [![Build Status](https://api.travis-ci.org/pyenv/pyenv.svg?branch=master)](https://github.com/cerb3re/game_prototype_lua)
 
 Theses repositories are for games that I'v made in LUA / Love 2D
-- Displacement for rotation physics notion
-- Movement for movement physics notion
-- States Machine for artificial intelligence notion
+- Displacement for rotation physics notions
+- Movement for movement physics notions
+- States Machine for artificial intelligence notions
 - Beaming effect for shader notions
 - Plaformer for displacement and others stuff
 - Procedural map generation, binding of isaac like
