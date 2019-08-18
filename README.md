@@ -9,6 +9,7 @@ Theses repositories are for games that I'v made in LUA / Love 2D
 - Beaming effect for shader notions
 - Plaformer for displacement and others stuff
 - Procedural map generation, binding of isaac like
+- Deep First Search, apply to maze generation
 ------------------------------------------------------------------
 
 - go to https://studio.zerobrane.com/download?not-this-time
