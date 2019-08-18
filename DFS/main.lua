@@ -10,6 +10,7 @@ local screenHeight  = love.graphics.getHeight()
 local seed          = 1
 local cellSize      = 8
 local explored      = 0
+local typeOfTerrain = "wall"
 local nbCol
 local nbLig
 
@@ -113,13 +114,23 @@ function love.draw()
     for c = 1, nbCol do
       local cell = grid[l][c]
       
-      if cell == "wall" then
+      if cell == typeOfTerrain then
         love.graphics.rectangle("fill", cellSize * (c - 1), cellSize * (l - 1), cellSize, cellSize)
       end
     end
   end
 end
 
-function love.keypressed()
+function love.keypressed(key)
+
+  if key == "f" then
+    typeOfTerrain = "floor"
+    love.graphics.setColor(0.50, 0.50, 0.50)
+    explore(2, 2)
+  elseif key == "w" then
+    typeOfTerrain = "wall"
+    love.graphics.setColor(0.50, 0.100, 0.200)
+    explore(2, 2)
+  end
 
 end
