@@ -3,6 +3,16 @@ love.graphics.setDefaultFilter("nearest")
 if arg[#arg] == "-debug" then require("mobdebug").start() end
 math.randomseed(love.timer.getTime()) -- get sure that the timer works
 
+local screenHeight = love.graphics.getHeight()
+local screenWidth = love.graphics.getWidth()
+
+local Grid = {}
+Grid.width = 10
+Grid.height = 20
+Grid.cellSize = 0
+Grid.cells = {}
+Grid.offsetX = 0
+
 local Tetros = {}
 
 Tetros[1] = {}
@@ -162,8 +172,22 @@ Tetros[7].color = {0,184,151}
 local CurrentTetros = 1
 local CurrentRotation = 1
 
-function love.load()
+function InitGrid()
+  local h = screenHeight / Grid.height
+  Grid.cellSize = h
+  Grid.offsetX = (screenWidth / 2) - ((Grid.cellSize * Grid.width) / 2)
+  Grid.cells = {}
   
+  for l = 1, Grid.height do
+    Grid.cells[l] = {}
+    for c = 1, Grid.width do
+      Grid.cells[l][c] = 0
+    end
+  end
+end
+
+function love.load()
+  InitGrid()
 end
 
 function love.draw()
@@ -181,16 +205,38 @@ function love.draw()
       end
     end
   end
+  
+  drawGrid()
 end
 
 function love.update(dt)
+
+end
+
+function drawGrid()
+  local h = Grid.cellSize
+  local w = h
+  local x,y
   
+  
+  love.graphics.setColor(50, 50, 50, 255)
+  
+  for l = 1, Grid.height do
+    Grid.cells[l] = {}
+    for c = 1, Grid.width do
+      x = (c - 1) * w
+      y = (l - 1) * h
+      x = x + Grid.offsetX
+      
+      love.graphics.rectangle("fill", x, y, w - 1, h - 1)
+    end
+  end
 end
 
 function love.keypressed(key)
   if key == "r" then
     CurrentRotation = CurrentRotation + 1
-    print(#Tetros[CurrentTetros].shape)
+    
     if CurrentRotation > #Tetros[CurrentTetros].shape then
       CurrentRotation = 1
     end
