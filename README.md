@@ -10,6 +10,8 @@ Theses repositories are for games that I'v made in LUA / Love 2D
 - Plaformer for displacement and others stuff
 - Procedural map generation, binding of isaac like
 - Deep First Search, apply to maze generation
+- Tetris, for collision
+- Casse brique, for collision
 ------------------------------------------------------------------
 
 - go to https://studio.zerobrane.com/download?not-this-time
