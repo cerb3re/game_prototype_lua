@@ -12,7 +12,7 @@
 
 # Prodédure de génération
 
-- Pour générer la carte, il va donc faloir prodéder comme suite:
+- Pour générer la carte, il va donc falloir procéder ainsi:
 	- Initialiser dans le rendu graphique (Draw) l'affichage des lignes et des colonnes
 	- Initialiser dans le rendu de ces lignes et des colonnes une salle servant de point de départ pour la génération des autres salles
 	- Depuis la génération de la salle initiale, pour générer les autres salles:
