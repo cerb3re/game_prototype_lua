@@ -12,6 +12,7 @@ Theses repositories are for games that I'v made in LUA / Love 2D
 - Deep First Search, apply to maze generation
 - Tetris, for collision
 - Casse brique, for collision
+- Positions, print actual mouse position
 ------------------------------------------------------------------
 
 - go to https://studio.zerobrane.com/download?not-this-time
