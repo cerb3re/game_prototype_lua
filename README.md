@@ -14,6 +14,7 @@ Theses repositories are for games that I'v made in LUA / Love 2D
 - Casse brique, for collision
 - Positions, print actual mouse position
 - Interaction_ball, ball collision initiation
+- Advance_wars, basics selection menu
 ------------------------------------------------------------------
 
 - go to https://studio.zerobrane.com/download?not-this-time
