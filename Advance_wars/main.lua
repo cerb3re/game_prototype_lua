@@ -7,30 +7,31 @@ love.window.setMode(1250,1050)
 
 Tilemap = {}
 
-Tilemap[1] = {1,1,1,1,1,1,1,1,1,1}
-Tilemap[2] = {1,1,1,1,1,1,1,1,1,1}
-Tilemap[3] = {1,1,1,1,1,1,1,1,1,1}
-Tilemap[4] = {1,1,1,2,2,1,1,1,1,1}
+Tilemap[1] = {1,1,1,1,3,1,1,1,3,3}
+Tilemap[2] = {1,1,1,1,2,1,1,1,1,3}
+Tilemap[3] = {1,1,1,1,2,1,1,1,1,2}
+Tilemap[4] = {1,1,1,1,1,1,1,1,1,1}
 Tilemap[5] = {1,1,1,1,1,1,1,1,1,1}
 Tilemap[6] = {1,1,1,1,1,1,1,1,1,1}
 Tilemap[7] = {1,1,1,1,1,1,1,1,1,1}
-Tilemap[8] = {1,1,1,1,1,1,1,1,1,1}
-Tilemap[9] = {1,1,1,1,1,1,1,1,1,1}
-Tilemap[10] = {1,1,1,1,1,1,1,1,1,1}
+Tilemap[8] = {1,1,1,1,2,1,1,1,1,1}
+Tilemap[9] = {1,1,1,1,2,1,1,1,2,3}
+Tilemap[10] = {1,1,1,1,3,1,1,1,3,3}
 
 Selection = {}
 Selection.l = 1
 Selection.c = 1
 
-TileSize = 40
+TileSize = 8
 
 dbUnits = {}
 dbUnits["TANK"] = {}
-dbUnits["TANK"].image = love.graphics.newImage("pictures/tank.png")
-
 dbUnits["INFANTRY"] = {}
-dbUnits["INFANTRY"].image = love.graphics.newImage("pictures/infantry.png")
 
+dbPictures = {}
+dbPictures[1] = {}
+dbPictures[2] = {}
+dbPictures[3] = {}
 lstUnits = {}
 
 function createUnit(pType, pX, pY)
@@ -46,11 +47,23 @@ function createUnit(pType, pX, pY)
 end
 
 function love.load()
+  
+  dbUnits["TANK"].image = love.graphics.newImage("pictures/tank.png")
+  dbUnits["INFANTRY"].image = love.graphics.newImage("pictures/infantry.png")
+  
+  -- pictures definition
+  dbPictures[1].image = love.graphics.newImage("pictures/map_plain.png")
+  dbPictures[2].image = love.graphics.newImage("pictures/map_forest.png")
+  dbPictures[3].image = love.graphics.newImage("pictures/map_mountain.png")
+  
+  -- Creation of units
   createUnit("TANK",3,5)
   createUnit("INFANTRY",2,3)
 end
 
 function love.draw()
+  
+  love.graphics.scale(6,6)
   
   local x,y = 0,0
   
@@ -58,14 +71,9 @@ function love.draw()
     x = 0
     for c=1, #Tilemap do
       
-      if Tilemap[l][c] == 1 then
-        love.graphics.setColor(.5,.5,0,1)
-      elseif Tilemap[l][c] == 2 then
-        love.graphics.setColor(1,.5,0,1)
-      end
+      local tileId = Tilemap[l][c]
       
-      love.graphics.rectangle("fill",x,y,TileSize -1,TileSize -1)
-      
+      love.graphics.draw(dbPictures[tileId].image, x -1, y -1)
     
       if Selection.c == c and Selection.l == l then
         love.graphics.setColor(1,1,1,1)
@@ -81,8 +89,9 @@ function love.draw()
         
         if Selection.c == unit.x and Selection.l == unit.y then
           love.graphics.print("TYPE: "..unit.type, #Tilemap * TileSize, 0)
-          love.graphics.print("HP: "..unit.HP, #Tilemap * TileSize, TileSize)
+          love.graphics.print("HP: "..unit.HP, #Tilemap * TileSize, TileSize * 3)
         end
+        
         
       end
       
