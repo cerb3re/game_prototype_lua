@@ -5,6 +5,8 @@ math.randomseed(love.timer.getTime()) -- get sure that the timer works
 
 love.window.setMode(1250,1050)
 
+-- Selection d'un joueur avec son affichage
+
 Tilemap = {}
 
 Tilemap[1] = {1,1,1,1,3,1,1,1,3,3}
@@ -21,6 +23,7 @@ Tilemap[10] = {1,1,1,1,3,1,1,1,3,3}
 Selection = {}
 Selection.l = 1
 Selection.c = 1
+Selection.selected = false
 
 TileSize = 8
 
@@ -48,8 +51,8 @@ end
 
 function love.load()
   
-  dbUnits["TANK"].image = love.graphics.newImage("pictures/tank.png")
-  dbUnits["INFANTRY"].image = love.graphics.newImage("pictures/infantry.png")
+  dbUnits["TANK"].image = love.graphics.newImage("pictures/tank_1.png")
+  dbUnits["INFANTRY"].image = love.graphics.newImage("pictures/infantry_1.png")
   
   -- pictures definition
   dbPictures[1].image = love.graphics.newImage("pictures/map_plain.png")
@@ -75,23 +78,34 @@ function love.draw()
       
       love.graphics.draw(dbPictures[tileId].image, x -1, y -1)
     
-      if Selection.c == c and Selection.l == l then
-        love.graphics.setColor(1,1,1,1)
-        love.graphics.rectangle("line", x, y, TileSize - 2, TileSize -2)
-        love.graphics.rectangle("line", x, y, TileSize - 3, TileSize -3)
-      end
+      
       
       for u=1, #lstUnits do
         local unit = lstUnits[u]
+        local rectColor = 1
         
         love.graphics.setColor(1,1,1,1)
         love.graphics.draw(dbUnits[unit.type].image, (unit.x - 1) * TileSize, (unit.y - 1) * TileSize)
-        
-        if Selection.c == unit.x and Selection.l == unit.y then
-          love.graphics.print("TYPE: "..unit.type, #Tilemap * TileSize, 0)
-          love.graphics.print("HP: "..unit.HP, #Tilemap * TileSize, TileSize * 3)
-        end
-        
+
+          if Selection.c == c and Selection.l == l then
+ 
+            if Selection.c == unit.x and Selection.l == unit.y then
+              love.graphics.print("TYPE: "..unit.type, #Tilemap * TileSize, 0)
+              love.graphics.print("HP: "..unit.HP, #Tilemap * TileSize, TileSize * 3)
+              
+              if Selection.selected == true then
+                rectColor = 0
+              end
+              
+            end
+            
+            
+          love.graphics.setColor(1, rectColor, rectColor,1)
+          love.graphics.rectangle("line", x, y, TileSize - 2, TileSize -2)
+          love.graphics.rectangle("line", x, y, TileSize - 3, TileSize -3)
+          love.graphics.setColor(1,1,1,1)
+
+          end 
         
       end
       
@@ -120,6 +134,10 @@ function love.keypressed(key)
   
   if key == "up" then
     Selection.l = Selection.l - 1
+  end
+  
+  if key == "space" then
+    Selection.selected = not Selection.selected
   end
   
 end
