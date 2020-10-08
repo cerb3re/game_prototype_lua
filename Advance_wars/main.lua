@@ -35,6 +35,7 @@ dbPictures = {}
 dbPictures[1] = {}
 dbPictures[2] = {}
 dbPictures[3] = {}
+
 lstUnits = {}
 
 function createUnit(pType, pX, pY)
@@ -104,6 +105,11 @@ function love.draw()
           love.graphics.rectangle("line", x, y, TileSize - 2, TileSize -2)
           love.graphics.rectangle("line", x, y, TileSize - 3, TileSize -3)
           love.graphics.setColor(1,1,1,1)
+          
+          if Selection.selected == true and unit.type == "INFANTRY" then
+            unit.x = Selection.c
+            unit.y = Selection.l
+          end
 
           end 
         
