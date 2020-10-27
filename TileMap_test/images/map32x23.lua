@@ -1,8 +1,3 @@
-local Game = {}
-local TILE_WIDTH = 32
-local TILE_HEIGHT = 32
-
-Game.Map = {}
 Game.Map =  {
   {10, 10, 10, 10, 10, 10, 10, 10, 10, 61, 10, 13, 10, 10, 10, 10, 10, 10, 13, 14, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15},
   {10, 10, 10, 10, 10, 11, 11, 11, 10, 10, 10, 13, 10, 10, 10, 10, 10, 10, 10, 14, 15, 15, 129, 15, 15, 15, 15, 15, 15, 68, 15, 15},
@@ -28,45 +23,3 @@ Game.Map =  {
   {21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 1, 37, 37, 37, 37},
   {21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 1, 37, 37, 37}
   }
-
-
-Game.TileTextures = {}
-Game.TileSheet = nil
-
-function Game.load()
-  Game.TileSheet = love.graphics.newImage("images/tilesheet.png")
-  Game.TileTextures[0] = nil
-  
-  local MAP_WIDTH = Game.TileSheet:getWidth()
-  local MAP_HEIGHT = Game.TileSheet:getHeight()
-  local nbColumns = MAP_WIDTH / TILE_WIDTH
-  local nbLignes = MAP_HEIGHT / TILE_HEIGHT
-  local c,l
-  local id = 1
-  
-  for l = 1, nbLignes do
-    for c = 1, nbColumns do
-      
-      Game.TileTextures[id] = love.graphics.newQuad((l - 1) * TILE_WIDTH, (c - 1) * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT, MAP_WIDTH, MAP_HEIGHT)
-
-      id = id + 1
-    end
-  end
-end
-
-function Game.draw()
-
-  for ligne = 1, #Game.Map do
-    for column = 1, 32 do
-      local idMap = Game.Map[ligne][column]
-      local textureQuad = Game.TileTextures[idMap]
-      
-      if textureQuad ~= nil then
-        love.graphics.draw(Game.TileSheet, textureQuad, (column - 1) * TILE_WIDTH, (ligne - 1) * TILE_HEIGHT)
-      end
-    end
-  end
-
-end
-
-return Game
