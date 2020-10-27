@@ -20,7 +20,7 @@ Game.Map =  {
 
 Game.TileTextures = {}
 
-function Game.Load()
+function Game.load()
   print("Game:Chargement des textures...")
   Game.TileTextures[0] = nil
   Game.TileTextures[1] = love.graphics.newImage("images/grassCenter.png")
@@ -31,7 +31,7 @@ function Game.Load()
   print("Game:Chargement des textures terminées...")
 end
 
-function Game.Draw()
+function Game.draw()
   local c,l
   
   for l=1,MAP_HEIGHT do
@@ -43,6 +43,18 @@ function Game.Draw()
       end
     end
   end
+  
+  local x = love.mouse.getX()
+  local y = love.mouse.getY()
+  local col = math.floor(x / TILE_WIDTH) + 1
+  local lig = math.floor(y / TILE_HEIGHT) + 1
+  local id = "Hors du tableau"
+  
+  if col > 0 and col < MAP_WIDTH and lig > 0 and lig < MAP_HEIGHT then
+    id = Game.Map[lig][col]
+  end
+  
+  love.graphics.print(tostring(id))
 end
 
 return Game
