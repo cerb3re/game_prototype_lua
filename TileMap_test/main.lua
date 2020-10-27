@@ -7,6 +7,8 @@ local hauteur = love.graphics.getHeight()
 local game = require("game")
 
 function love.load()
+  love.window.setMode(1024, 768, {resizable=true, vsync=false, minwidth=400, minheight=300})
+
   game.load()
 end
 
