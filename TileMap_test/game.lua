@@ -56,7 +56,7 @@ end
 
 function Game.draw()
 
-  for ligne = 1, #Game.Map do
+  for ligne = 1, 23 do
     for column = 1, 32 do
       local idMap = Game.Map[ligne][column]
       local textureQuad = Game.TileTextures[idMap]
@@ -66,6 +66,18 @@ function Game.draw()
       end
     end
   end
+  
+  local x = love.mouse.getX()
+  local y = love.mouse.getY()
+  local c = math.floor(x / TILE_WIDTH) + 1
+  local l = math.floor(y / TILE_HEIGHT) + 1
+  local id = "Aucune texture"
+  
+  if l > 0 and l <= 23 and c > 0 and c <= 32 then
+    id = Game.Map[l][c]
+  end
+  
+  love.graphics.print("Texture ID : "..id)
 
 end
 
