@@ -5,81 +5,62 @@ math.randomseed(love.timer.getTime()) -- get sure that the timer works
 
 local largeur = love.graphics.getWidth()
 local hauteur = love.graphics.getHeight()
-local wall = love.audio.newSource("mur.wav", "static")
-local lstRacket = {}
+
+local pad = {}
+pad.x = 0
+pad.y = 0
+pad.w = 50
+pad.h = 100
+
 local ball = {}
-
-ball.x = 0
-ball.y = 0
-ball.vx = 0
-ball.vy = 0
-ball.active = false
-ball.isShooting = false
-
-function addRacket(pX, pY, pWidth, pHeight)
-  local racket
-  
-  racket = {}
-  racket.x = pX
-  racket.y = pY
-  racket.width = pWidth
-  racket.height = pHeight
-  
-  table.insert(lstRacket, racket)
-end
+ball.w = 40
+ball.h = 40
+ball.vx = 0.5
+ball.vy = 0.5
+ball.x = largeur / 2
+ball.y = hauteur / 2
 
 function love.load()
   love.window.setMode(1024, 768, {resizable=true, vsync=false, minwidth=400, minheight=300})
-  
-  addRacket(0,0,100,50)
-  addRacket(0,768 - 50,100,50)
 end
 
 function love.draw()
-  
-  for i = 1, #lstRacket do
-    local racket = lstRacket[i]
-    
-    love.graphics.rectangle("fill", racket.x, racket.y, racket.width, racket.height)
-  end
-  
-  if ball.active == true then
-    love.graphics.rectangle("fill", ball.x, ball.y, 40,40)
-  end
-  
+  love.graphics.rectangle("fill", pad.x, pad.y, pad.w, pad.h)
+  love.graphics.rectangle("fill", ball.x, ball.y, ball.w, ball.h)
 end
 
 function love.update(dt)
-  lstRacket[1].x = love.mouse.getX()
+  hauteur = love.graphics.getHeight()
+  largeur = love.graphics.getWidth()
   
-  if ball.active == true then
-    if ball.isShooting == false then
-      ball.x = lstRacket[1].x
-      ball.isShooting = true
+  ball.x = ball.x + ball.vx
+  ball.y = ball.y + ball.vy
+  
+  if ball.x >= largeur - ball.w or ball.x <= 0 or (ball.x <= pad.x + ball.w and ball.y <= pad.y + ball.h) then
+    ball.vx = -ball.vx
+  end
+  
+  if ball.y >= hauteur - ball.h or ball.y <= 0 then
+    ball.vy = -ball.vy
+  end
+  
+  if love.keyboard.isDown("down") then
+    if pad.y >= hauteur - pad.h then
+      pad.y = hauteur - pad.h
+    else
+      pad.y = pad.y + 1
     end
-    ball.vy = 0.5
-    ball.y = ball.y + ball.vy
   end
   
-  if ball.active == false then
-    ball.x = 0
-    ball.y = 0
-    ball.vx = 0
-    ball.vy = 0
-    ball.isShooting = false
+  if love.keyboard.isDown("up") then
+    if pad.y > 0 then
+      pad.y = pad.y - 1
+    else
+      pad.y = 0
+    end
   end
-  
-  if ball.y >= (768 - 50) then
-    ball.active = false
-    wall:play()
-  end
-
 end
 
 function love.keypressed(key)
- 
-  if key == "space" then
-    ball.active = true
-  end
-  
+
 end
