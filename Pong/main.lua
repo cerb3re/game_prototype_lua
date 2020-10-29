@@ -36,12 +36,19 @@ function love.update(dt)
   ball.x = ball.x + ball.vx
   ball.y = ball.y + ball.vy
   
-  if ball.x >= largeur - ball.w or ball.x <= 0 or (ball.x <= pad.x + ball.w and ball.y <= pad.y + ball.h) then
+  if ball.x >= largeur - ball.w or ball.x <= 0 then
     ball.vx = -ball.vx
   end
   
   if ball.y >= hauteur - ball.h or ball.y <= 0 then
     ball.vy = -ball.vy
+  end
+  
+  if ball.x <= pad.x + pad.w then
+    if ball.y <= pad.y + pad.h and ball.y + ball.h >= pad.y then
+      ball.vx = -ball.vx
+    end
+    --print(true)
   end
   
   if love.keyboard.isDown("down") then
