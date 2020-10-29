@@ -47,6 +47,7 @@ function love.update(dt)
   if ball.x <= pad.x + pad.w then
     if ball.y <= pad.y + pad.h and ball.y + ball.h >= pad.y then
       ball.vx = -ball.vx
+      ball.x = pad.x + pad.w
     end
     --print(true)
   end
