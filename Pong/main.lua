@@ -5,6 +5,8 @@ math.randomseed(love.timer.getTime()) -- get sure that the timer works
 
 local largeur = love.graphics.getWidth()
 local hauteur = love.graphics.getHeight()
+local resPlayer1 = 0
+local resPlayer2 = 0
 
 local lstPad = {}
 
@@ -43,6 +45,12 @@ function love.load()
 end
 
 function love.draw()
+  hauteur = love.graphics.getHeight()
+  largeur = love.graphics.getWidth()
+  
+  love.graphics.line(largeur/2, 0, largeur/2, hauteur) 
+  love.graphics.print("Player 1 : "..resPlayer1, (largeur/2) - (40 * 3), 10)
+  love.graphics.print("Player 2 : "..resPlayer2, largeur/2 + 40, 10)
   
   for i = 1, #lstPad do
     local pad = lstPad[i]
@@ -61,6 +69,7 @@ function love.update(dt)
   ball.y = ball.y + ball.vy
   
   if ball.x <= 0 then
+    resPlayer2 = resPlayer2 + 1
     centrerLaBalle()
   end
   
