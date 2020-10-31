@@ -1,113 +1,101 @@
+io.stdout:setvbuf('no') -- Used to print in terminal
+love.graphics.setDefaultFilter("nearest")
+if arg[#arg] == "-debug" then require("mobdebug").start() end
+math.randomseed(love.timer.getTime()) -- get sure that the timer works
+
 local largeur
 local hauteur
-
+local lstBrick = {}
 local pad = {}
-pad.x = 0
-pad.y = 0
-pad.largeur = 80
-pad.hauteur = 20
-
-local balle = {}
-balle.x = 0
-balle.y = 0
-balle.vx = 0
-balle.vy = 0
-balle.angle = 0
-balle.angleNeutre = 0 - ((math.pi*2) / 2)
-balle.vitesse = 0
-balle.colle = true
-balle.rayon = 10
-degre45 = (math.pi*2) / (360/45)
-
-local brique = {}
-local niveau = {}
-
-function Demarre()
-  pad.y = hauteur - (15/2)
-  
-  brique.hauteur = 25
-  brique.largeur = largeur / 15
-
-  balle.angle = 0 - degre45
-  balle.vitesse = 300
-  balle.colle = true
-  
-  for l = 1,6 do
-    niveau[l] = {}
-    for c = 1,15 do
-      niveau[l][c] = 1
-    end
-  end
-end
+local ball = {}
 
 function love.load()
+  
   largeur = love.graphics.getWidth()
   hauteur = love.graphics.getHeight()
-  Demarre()
+  
+  pad.hauteur = 50
+  pad.largeur = 100
+  pad.x = 0
+  pad.y = hauteur - pad.hauteur
+  
+  ball.radius = 20
+  ball.y = hauteur / 2
+  ball.x = largeur / 2
+  ball.vx = 6
+  ball.vy = 6
+  
+  for ligne = 0, largeur / 15 do
+    for colonne = 0, 3 do
+      
+      local brick = {}
+      
+      brick.largeur = largeur / 15
+      brick.hauteur = 30
+      brick.x = ligne * brick.largeur
+      brick.y = colonne * brick.hauteur
+      
+      table.insert(lstBrick, brick)
+    end
+  end
+  
 end
 
 function love.update(dt)
-  pad.x = love.mouse.getX()
-  if pad.x < 0 then pad.x = 0 end
-  if pad.x > largeur then pad.x = largeur end
-  
-  if balle.colle == true then
-    balle.x = pad.x
-    balle.y = pad.y - (pad.hauteur/2) - (balle.rayon)
-  else
-    balle.x = balle.x + balle.vx*dt
-    balle.y = balle.y + balle.vy*dt
-    local c = math.floor((balle.x / brique.largeur)) + 1
-    local l = math.floor((balle.y / brique.hauteur)) + 1
-    
-    if l > 0  and l <= #niveau and c >= 1 and c <= 15 then
-      if niveau[l][c] == 1 then
-        niveau[l][c] = 0
-        balle.vy = 0 - balle.vy
-      end
-    end
-    
-    if balle.y > (pad.y - pad.hauteur/2) - balle.rayon then
-      local distanceX = math.abs(pad.x - balle.x)
-      if distanceX < pad.largeur / 2 then
-        balle.vy = 0 - balle.vy
-        balle.y = (pad.y - pad.hauteur/2) - balle.rayon
-      end
-    end
-    
-    if balle.x > largeur or balle.x < 0 then
-      balle.vx = 0 - balle.vx
-    end
-    if balle.y < 0 then balle.vy = 0 - balle.vy end
-    
-    if balle.y > hauteur then
-      balle.colle = true
-    end
+
+  for i = 1, #lstBrick do
+    local brick = lstBrick[i]
+
   end
 
 end
 
 function love.draw()
-  local bx, by = 0,0
-  for l = 1,6 do
-    bx = 0
-    for c = 1,15 do
-      if niveau[l][c] == 1 then
-        love.graphics.rectangle("fill",bx + 1, by + 1, brique.largeur - 2, brique.hauteur - 2)
-      end
-      bx = bx + brique.largeur
-    end
-    by = by + brique.hauteur
+  largeur = love.graphics.getWidth()
+  hauteur = love.graphics.getHeight()
+  
+  -- bricks
+  for i = 1, #lstBrick do
+    local brick = lstBrick[i]
+
+    love.graphics.rectangle("fill", brick.x, brick.y, brick.largeur - 3, brick.hauteur - 3)
   end
 
-  love.graphics.rectangle("fill", pad.x - (pad.largeur/2), pad.y - (pad.hauteur/2), pad.largeur, pad.hauteur)
-  love.graphics.circle("fill", balle.x, balle.y, balle.rayon)
+  -- pad
+  pad.x = love.mouse.getX()
+  if pad.x <= 0 then
+    pad.x = 0
+  end
+  if pad.x >= largeur - pad.largeur then
+    pad.x = largeur - pad.largeur
+  end
+
+  love.graphics.rectangle("fill", pad.x, pad.y, pad.largeur, pad.hauteur)
+  
+  -- ball
+  ball.y = ball.y + ball.vy
+  ball.x = ball.x + ball.vx
+  
+  if ball.x <= 0 or ball.x >= largeur - ball.radius then
+    ball.vx = -ball.vx
+  end
+  
+  if ball.y - ball.radius <= 0 or ball.y >= hauteur - ball.radius then
+    ball.vy = -ball.vy
+  end
+  
+  if ball.y + ball.radius >= pad.y then
+    
+    if ball.x >= pad.x - ball.radius and ball.x <= pad.x + pad.largeur then
+      ball.y = pad.y - ball.radius
+      ball.vy = -ball.vy
+    end
+  end
+  
+  love.graphics.circle("fill", ball.x, ball.y, ball.radius)
+
 end
 
 function love.mousepressed(px, py, pn)
-  if balle.colle == true then
-    balle.colle = false
-    balle.vx = balle.vitesse * math.cos(balle.angle)
-    balle.vy = balle.vitesse * math.sin(balle.angle)
-  end
+
 end
