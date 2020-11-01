@@ -77,7 +77,6 @@ function love.update(dt)
   end
   
   --bricks
-  
   for i = #lstBrick, 1, -1 do
     brick = lstBrick[i]
     
