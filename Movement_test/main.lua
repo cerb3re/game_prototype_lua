@@ -48,6 +48,7 @@ function love.update(dt)
   
   if ship.y + ship.picture:getHeight() / 2 >= height then
     ship.y = height - ship.picture:getHeight() / 2
+    ship.vy = -ship.vy
   end
   
 end
