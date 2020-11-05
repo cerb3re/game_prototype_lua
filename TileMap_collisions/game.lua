@@ -77,6 +77,10 @@ function Game.Load()
   print("Game:Chargement des textures terminées...")
 end
 
+function Game.Update(dt)
+  Game.Hero.Update(dt)
+end
+
 function Game.Draw()
   local c,l
   
@@ -104,6 +108,15 @@ function Game.Draw()
       " ("..tostring(Game.TileTypes[id])..")"
       ,1,1)
     ]]--
+  end
+  
+  Game.Hero.Draw(Game.Map)
+  
+end
+
+function Game.Keypressed(key)
+  if key == "right" then
+    Game.Hero.column = Game.Hero.column + 1
   end
 end
 

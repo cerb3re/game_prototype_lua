@@ -23,6 +23,7 @@ function love.load()
 end
 
 function love.update(dt)
+  myGame.Update(dt)
 end
 
 function love.draw()
@@ -33,7 +34,7 @@ end
 
 function love.keypressed(key)
   
-  print(key)
+  myGame.Keypressed(key)
   
 end
   

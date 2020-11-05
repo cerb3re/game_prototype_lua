@@ -10,9 +10,19 @@ hero.line = 1
 hero.column = 1
 
 function hero.Update(dt)
+  hero.imgCurrent = hero.imgCurrent + (5 * dt)
+  
+  if math.floor(hero.imgCurrent) > #hero.images then
+    hero.imgCurrent = 1
+  end
 end
 
-function hero.Draw(dt)
+function hero.Draw(pMap)
+  local x = (hero.column - 1) * pMap.MAP_WIDTH
+  local y = (hero.line -1 ) * pMap.MAP_HEIGHT
+  
+  love.graphics.draw(hero.images[math.floor(hero.imgCurrent)], x, y, 0, 2, 2)
+  
 end
 
 return hero
