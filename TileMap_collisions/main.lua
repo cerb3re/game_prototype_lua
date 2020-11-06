@@ -32,9 +32,4 @@ function love.draw()
 
 end
 
-function love.keypressed(key)
-  
-  myGame.Keypressed(key)
-  
-end
   

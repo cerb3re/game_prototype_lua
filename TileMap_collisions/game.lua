@@ -1,6 +1,7 @@
 local Game = {}
 
 Game.Map = {}
+Game.Map.Fog = {}
 Game.Map.Grid =  {
   {10, 10, 10, 10, 10, 10, 10, 10, 10, 61, 10, 13, 10, 10, 10, 10, 10, 10, 13, 14, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15},
   {10, 10, 10, 10, 10, 11, 11, 11, 10, 10, 10, 13, 10, 10, 10, 10, 10, 10, 10, 14, 15, 15, 129, 15, 15, 15, 15, 15, 15, 68, 15, 15},
@@ -38,6 +39,28 @@ Game.TileTypes = {}
 
 Game.Hero = require("hero")
 
+function Game.Map.ClearFog(pLine, pCol)
+  for l = pLine -1, pLine + 1 do
+    for c = pCol -1, pCol + 1 do
+     if c > 0 and c <= Game.Map.MAP_WIDTH and l >0 and l <= Game.Map.MAP_HEIGHT then
+       Game.Map.Fog[l][c] = 0
+      end
+    end
+  end
+end
+
+function Game.Map.isSolid(pID)
+  local tileType = Game.TileTypes[pID]
+  
+  if tileType == "Sea" or
+     tileType == "Tree" or
+     tileType == "Rock" then
+    return true
+  end
+  
+  return false
+end
+
 function Game.Load()
   print("Game:Chargement des textures...")
   
@@ -65,7 +88,7 @@ function Game.Load()
   Game.TileTypes[15] = "Sand"
   Game.TileTypes[19] = "Water"
   Game.TileTypes[20] = "Water"
-  Game.TileTypes[21] = "Water"
+  Game.TileTypes[21] = "Sea"
   Game.TileTypes[37] = "Lava"
   Game.TileTypes[55] = "Tree"
   Game.TileTypes[58] = "Tree"
@@ -75,10 +98,24 @@ function Game.Load()
   Game.TileTypes[129] = "Rock"
 
   print("Game:Chargement des textures terminées...")
+  
+  print("Création du brouillard")
+  
+  for line = 1, Game.Map.MAP_HEIGHT do
+    Game.Map.Fog[line] = {}
+    for col = 1, Game.Map.MAP_WIDTH do
+      Game.Map.Fog[line][col] = 1
+    end
+    
+  end
+  
+  print("brouillard créé")
+  
+  Game.Map.ClearFog(Game.Hero.line, Game.Hero.column)
 end
 
 function Game.Update(dt)
-  Game.Hero.Update(dt)
+  Game.Hero.Update(Game.Map, dt)
 end
 
 function Game.Draw()
@@ -89,10 +126,20 @@ function Game.Draw()
       local id = Game.Map.Grid[l][c]
       local texQuad = Game.TileTextures[id]
       if texQuad ~= nil then
-        love.graphics.draw(Game.TileSheet, texQuad, (c-1)*Game.Map.TILE_WIDTH, (l-1)*Game.Map.TILE_HEIGHT)
+        local x = (c-1)*Game.Map.TILE_WIDTH
+        local y = (l-1)*Game.Map.TILE_HEIGHT
+        love.graphics.draw(Game.TileSheet, texQuad, x, y)
+        
+        if Game.Map.Fog[l][c] == 1 then
+          love.graphics.setColor(0,0,0)
+          love.graphics.rectangle("fill", x, y, Game.Map.TILE_WIDTH, Game.Map.TILE_HEIGHT)
+          love.graphics.setColor(255,255,255)
+        end
       end
     end
   end
+  
+  Game.Hero.Draw(Game.Map)
   
   local x = love.mouse.getX()
   local y = love.mouse.getY()
@@ -100,22 +147,15 @@ function Game.Draw()
   local l = math.floor(y / Game.Map.TILE_HEIGHT) + 1
   if l>0 and c>0 and l <= Game.Map.MAP_HEIGHT and c <= Game.Map.MAP_WIDTH then
     local id = Game.Map.Grid[l][c]
-    --[[
+    
     love.graphics.print(
       "Ligne: "..tostring(l)..
       " Colonne: "..tostring(c)..
       " ID: "..tostring(id)..
       " ("..tostring(Game.TileTypes[id])..")"
       ,1,1)
-    ]]--
+    
   end
-  
-  Game.Hero.Draw(Game.Map)
-  
-end
-
-function Game.Keypressed(key)
-  Game.Hero.Keypressed(key)
 end
 
 return Game
