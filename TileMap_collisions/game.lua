@@ -115,9 +115,7 @@ function Game.Draw()
 end
 
 function Game.Keypressed(key)
-  if key == "right" then
-    Game.Hero.column = Game.Hero.column + 1
-  end
+  Game.Hero.Keypressed(key)
 end
 
 return Game
