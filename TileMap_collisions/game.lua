@@ -1,3 +1,4 @@
+
 local Game = {}
 
 Game.Map = {}
@@ -40,10 +41,19 @@ Game.TileTypes = {}
 Game.Hero = require("hero")
 
 function Game.Map.ClearFog(pLine, pCol)
-  for l = pLine -1, pLine + 1 do
-    for c = pCol -1, pCol + 1 do
-     if c > 0 and c <= Game.Map.MAP_WIDTH and l >0 and l <= Game.Map.MAP_HEIGHT then
-       Game.Map.Fog[l][c] = 0
+  for l = 1, Game.Map.MAP_HEIGHT do
+    for c = 1, Game.Map.MAP_WIDTH do
+      if c > 0 and c <= Game.Map.MAP_WIDTH and l > 0 and l <= Game.Map.MAP_HEIGHT then
+        local dist = math.dist(c,l,pCol, pLine)
+        
+        if dist < 5 then
+          local alpha = dist / 5
+          
+          if Game.Map.Fog[l][c] > alpha then
+            Game.Map.Fog[l][c] = alpha
+          end
+        end
+        
       end
     end
   end
@@ -131,9 +141,9 @@ function Game.Draw()
         love.graphics.draw(Game.TileSheet, texQuad, x, y)
         
         if Game.Map.Fog[l][c] == 1 then
-          love.graphics.setColor(0,0,0)
+          love.graphics.setColor(0,0,0, 255 * Game.Map.Fog[l][c])
           love.graphics.rectangle("fill", x, y, Game.Map.TILE_WIDTH, Game.Map.TILE_HEIGHT)
-          love.graphics.setColor(255,255,255)
+          love.graphics.setColor(255,255,255 * Game.Map.Fog[l][c])
         end
       end
     end

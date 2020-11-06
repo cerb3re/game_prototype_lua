@@ -44,9 +44,11 @@ function hero.Update(pMap, dt)
         print("collision avec une tuile solide !!")
         hero.column = old_column
         hero.line = old_line
+      else
+        pMap.ClearFog(hero.line, hero.column)
       end
       
-      pMap.ClearFog(hero.line, hero.column)
+      
       
       hero.keyPressed = true
     
