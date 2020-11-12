@@ -40,7 +40,7 @@ player.vx = 0
 player.vy = 0
 player.force = 5
 player.isJumping = false
-player.jumpReady = false
+player.jumpReady = true
 
 function love.load()
   
@@ -56,8 +56,9 @@ function love.update(dt)
     player.vx = player.force
   end
   
-  if love.keyboard.isDown("up") then
-    player.vy = - player.force
+  if love.keyboard.isDown("up") and player.jumpReady == true then
+    player.vy = - player.force * 2
+    player.jumpReady = false
   end
   
   if player.vx < 0 then 
@@ -76,10 +77,11 @@ function love.update(dt)
   
   player.x = player.x + player.vx
   player.y = player.y + player.vy
-  player.vy = player.vy + 0.3
+  player.vy = player.vy + 0.5
   
   if player.y >= 8 * 32 then
     player.y = 8 * 32
+    player.jumpReady = true
   end
   
   
