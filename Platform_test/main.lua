@@ -3,105 +3,85 @@ if arg[#arg] == "-debug" then require("mobdebug").start() end
 
 love.graphics.setDefaultFilter("nearest")
 
--- Images loading
-local imgTiles = {}
-imgTiles["1"] = love.graphics.newImage("images/tile1.png")
-imgTiles["2"] = love.graphics.newImage("images/tile2.png")
-imgTiles["3"] = love.graphics.newImage("images/tile3.png")
-imgTiles["4"] = love.graphics.newImage("images/tile4.png")
-imgTiles["5"] = love.graphics.newImage("images/tile5.png")
-imgTiles["="] = love.graphics.newImage("images/tile=.png")
-imgTiles["["] = love.graphics.newImage("images/tile[.png")
-imgTiles["]"] = love.graphics.newImage("images/tile].png")
-imgTiles["H"] = love.graphics.newImage("images/tileH.png")
-imgTiles["#"] = love.graphics.newImage("images/tile#.png")
-imgTiles["g"] = love.graphics.newImage("images/tileg.png")
-imgTiles[">"] = love.graphics.newImage("images/tile-arrow-right.png")
-imgTiles["<"] = love.graphics.newImage("images/tile-arrow-left.png")
+tile = love.graphics.newImage("tile1.png")
 
--- demo test
-local mapTest = {
-     {1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-     {1, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-     {1, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-     {1, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-     {1, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-     {1, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-     {1, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-     {1, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-     {1, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-     {1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-}
-
-local player = {}
-player.x = 4 * 32
-player.y = 8 * 32
+player = {}
+player.x = 0
+player.y = 0
 player.vx = 0
 player.vy = 0
-player.force = 5
 player.isJumping = false
-player.jumpReady = true
+player.intertia = 5
+
+map = {}
 
 function love.load()
-  
+  loadLevel(1)
 end
 
 function love.update(dt)
   
-  if love.keyboard.isDown("left") then
-    player.vx = -player.force
-  end
-  
-  if love.keyboard.isDown("right") then
-    player.vx = player.force
-  end
-  
-  if love.keyboard.isDown("up") and player.jumpReady == true then
-    player.vy = - player.force * 2
-    player.jumpReady = false
-  end
-  
-  if player.vx < 0 then 
-    player.vx = player.vx + 0.3
-    if player.vx > 0 then player.vx = 0 end
-  end
-  
-  if player.vx > 0 then
-    player.vx = player.vx - 0.3
-    if player.vx < 0 then player.vx = 0 end
-  end
-  
-
-  
-  
-  
-  player.x = player.x + player.vx
-  player.y = player.y + player.vy
-  player.vy = player.vy + 0.5
-  
-  if player.y >= 8 * 32 then
-    player.y = 8 * 32
-    player.jumpReady = true
-  end
-  
-  
-  
 end
 
 function love.draw()
-  for ligne = 1, #mapTest do
+  local posMouseX = math.floor(love.mouse.getX() / 32) + 1
+  local posMouseY = math.floor(love.mouse.getY() / 32) + 1
+  
+  for ligne = 1, #map do
     
-    for colonne = 1, #mapTest[1] do
+    for colonne = 1, #map[1] do
       
-      if mapTest[ligne][colonne] == 1 then
-        --love.graphics.rectangle("fill", colonne * 32, ligne * 32, imgTiles["1"]:getHeight(), imgTiles["1"]:getHeight())
-        love.graphics.draw(imgTiles["1"], (colonne - 1) * 32, (ligne - 1) * 32, 0, 4, 4)
-        
+      local id = string.sub(map[ligne], colonne, colonne)
+      
+      if tonumber(id) > 0 then
+        love.graphics.draw(tile, (colonne - 1) * 32, (ligne - 1) * 32)
       end
-      
-    -- player
-    love.graphics.rectangle("fill", player.x, player.y, 32, 32)
+
+      local tile = getTileAt(ligne, colonne)
+      love.graphics.print(tile)
+       
     end
     
   end
+end
+
+function getTileAt(pX, pY)
+  local posX = math.floor(love.mouse.getX() / 32) + 1
+  local posY = math.floor(love.mouse.getY() / 32) + 1
+
+  local id = string.sub(map[posY], posX, posX)
+  
+  if posX > 0 and posX <= #map[1] and posY > 0 and posY <= #map then
+    return id
+  end
+  
+  return 0
+end
+
+function loadLevel(pLevel)
+  
+  if pLevel == 1 then
+    
+    map[1]  = "1111111111111111111111111"
+    map[2]  = "1000000000000000000000001"
+    map[3]  = "1000111111111111111100001"
+    map[4]  = "1000000000000000000010011"
+    map[5]  = "1000000000000000000000001"
+    map[6]  = "1000000000000000000000111"
+    map[7]  = "1000000000000000000000001"
+    map[8]  = "1000000000000000011111111"
+    map[9]  = "1000000000000100000000001"
+    map[10] = "1000000000000001000000001"
+    map[11] = "1000000000111100000000001"
+    map[12] = "1000000000000000000000001"
+    map[13] = "1111111000000000000000001"
+    map[14] = "1000000010000000000000001"
+    map[15] = "1100000000111100000000001"
+    map[16] = "1000000001000010000000001"
+    map[17] = "1000000010000001000000001"
+    map[18] = "1111111111111111111111111"
+    
+  end
+  
+  return map
 end
